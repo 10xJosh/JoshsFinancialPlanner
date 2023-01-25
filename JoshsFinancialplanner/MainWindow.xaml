@@ -24,8 +24,10 @@
         </Grid.ColumnDefinitions>
         <Menu Grid.Row="0" Grid.ColumnSpan="4" Background="White">
             <MenuItem Header="File">
-                <MenuItem Header="Load">
-                </MenuItem>
+                <MenuItem Header="New" Click="MenuNew_Click"/>
+                <MenuItem Header="Save" Click="MenuSave_Click"/>
+                <MenuItem Header="Load" Click="MenuLoad_Click"/>
+                <MenuItem Header="Exit" Click="MenuExit_Click"/>
             </MenuItem>
             <MenuItem Header="Edit">
 
