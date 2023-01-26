@@ -1,4 +1,5 @@
-﻿using System;
+﻿using JoshsFinancialplanner.MenuFunctions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,6 +20,8 @@ namespace JoshsFinancialplanner.ButtonFunctions
     /// </summary>
     public partial class FrmAddPayment : Window
     {
+        PaymentDetails paymentDetails;
+
         public FrmAddPayment()
         {
             InitializeComponent();
@@ -27,7 +30,16 @@ namespace JoshsFinancialplanner.ButtonFunctions
 
         private void btnAdd_Click(object sender, RoutedEventArgs e)
         {
+            if (txtPaymentName.Text == "" || txtDueDate.Text == "" || txtAmount.Text == "")
+            {
+                MessageBox.Show("Entries are missing. Double check everything is filled out in order to continue.", 
+                    "Error", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+        }
 
+        private void btnCancel_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
         }
 
         private void ComboBoxSettings()
