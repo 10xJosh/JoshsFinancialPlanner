@@ -6,28 +6,14 @@ using System.Threading.Tasks;
 
 namespace JoshsFinancialplanner.MenuFunctions
 {
-    public class AppSettings
+    public class PaymentDetails
     {
         public string Month { get; set; }
-        public string Day { get; set; }
+        public string PaymentName { get; set; }
+        public string DueDate { get; set; }
         public string Year { get; set; }
+        public string Category { get; set; }
         public decimal Amount { get; set; }
 
     }
-    /*
-    enum Months{
-        January,
-        Feburary,
-        March,
-        April,
-        May,
-        June,
-        July,
-        August,
-        September,
-        October,
-        November,
-        December
-    }
-    */
 }

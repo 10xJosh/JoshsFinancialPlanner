@@ -49,8 +49,8 @@ namespace JoshsFinancialplanner.MenuFunctions
             try
             {
                 
-                AppSettings overview = new AppSettings();
-                XmlSerializer writer = new XmlSerializer(typeof(AppSettings));
+                PaymentDetails overview = new PaymentDetails();
+                XmlSerializer writer = new XmlSerializer(typeof(PaymentDetails));
 
                 FileStream file = File.Create(path);
 
@@ -89,9 +89,9 @@ namespace JoshsFinancialplanner.MenuFunctions
             try
             {
                 path = openFileDialog.FileName;
-                XmlSerializer reader = new XmlSerializer(typeof(AppSettings));
+                XmlSerializer reader = new XmlSerializer(typeof(PaymentDetails));
                 StreamReader file = new StreamReader((Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + "/SerializationOverview.jfp"));
-                AppSettings overview = (AppSettings)reader.Deserialize(file);
+                PaymentDetails overview = (PaymentDetails)reader.Deserialize(file);
                 file.Close();
             }
             catch (Exception ex)

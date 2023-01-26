@@ -1,4 +1,5 @@
 ﻿using JoshsFinancialplanner.MenuFunctions;
+using JoshsFinancialplanner.ButtonFunctions;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
@@ -27,6 +28,10 @@ namespace JoshsFinancialplanner
         public MainWindow()
         {
             InitializeComponent();
+            PaymentDetails entry = new PaymentDetails { Month = "January", Amount = 999.99m,
+                DueDate = "23", Category="Living",PaymentName="Lamborghini" };
+
+            dataGridPaymentDisplay.Items.Add(entry);
         }
 
         private void MenuNew_Click(object sender, RoutedEventArgs e)
@@ -74,22 +79,33 @@ namespace JoshsFinancialplanner
 
         private void btnAdd_Click(object sender, RoutedEventArgs e)
         {
-
+            FrmAddPayment frmAddPaymen = new FrmAddPayment();
+            frmAddPaymen.ShowDialog();
         }
 
         private void btnEdit_Click(object sender, RoutedEventArgs e)
         {
-
+            if(dataGridPaymentDisplay.SelectedItem != null)
+            {
+                FrmAddPayment frmAddPaymen = new FrmAddPayment();
+                frmAddPaymen.ShowDialog();
+            }
         }
 
         private void btnDelete_Click(object sender, RoutedEventArgs e)
         {
-
+            //dataGridPaymentDisplay;
         }
 
         private void btnFilter_Click(object sender, RoutedEventArgs e)
         {
 
+        }
+
+        private void dataGridPaymentDisplay_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            btnEdit.IsEnabled= true;
+            btnDelete.IsEnabled= true;
         }
     }
 }

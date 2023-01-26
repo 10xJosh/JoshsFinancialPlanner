@@ -38,17 +38,27 @@
                Margin="0,4,0,34" Grid.Row="1" HorizontalAlignment="Left" Width="160"/>
         <Label Content="Upcoming Payments:" Margin="0,3,7,35" Grid.Row="1" Grid.Column="1"
                />
+        
         <DataGrid Name="dataGridPaymentDisplay" Grid.Row="1" Margin="0,36,0,0" Grid.RowSpan="2" 
-                  Grid.ColumnSpan="3" Grid.Column="1" />
+                  Grid.ColumnSpan="3" Grid.Column="1" IsReadOnly="True" SelectionChanged="dataGridPaymentDisplay_SelectionChanged">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Payment Name" Width="200" Binding="{Binding PaymentName}"></DataGridTextColumn>
+                <DataGridTextColumn Header="Due Date" Width="75" Binding="{Binding DueDate}"></DataGridTextColumn>
+                <DataGridTextColumn Header="Amount" Width="75" Binding="{Binding Amount}"></DataGridTextColumn>
+                <DataGridTextColumn Header="Category" Width="100" Binding="{Binding Category}"></DataGridTextColumn>
+            </DataGrid.Columns>
+            <DataGrid.Resources>
+                
+            </DataGrid.Resources>
+        </DataGrid>
         <Button Name="btnAdd" Click="btnAdd_Click" Grid.Column="2" Content="Add" Margin="27,25,350,25" 
                 Grid.Row="3" Width="85" Height="40"/>
-        <Button Name="btnEdit" Click="btnEdit_Click" Grid.Column="2" Content="Edit" Margin="160,25,217,25"
+        <Button Name="btnEdit" IsEnabled="False"  Click="btnEdit_Click" Grid.Column="2" Content="Edit" Margin="160,25,217,25"
                 Grid.Row="3" Width="85" Height="40"/>
-        <Button Name="btnDelete" Click="btnDelete_Click" Grid.Column="2" Content="Delete" Margin="290,25,87,25" 
+        <Button Name="btnDelete" IsEnabled="False" Click="btnDelete_Click" Grid.Column="2" Content="Delete" Margin="290,25,87,25" 
                 Grid.Row="3" Width="85" Height="40"/>
         <Button Name="btnFilter" Click="btnFilter_Click" Grid.Column="3" Content="Filter" Height="20" Width="40"
                 Margin="5,7,0,39" Grid.Row="1"/>
         <Label Name="lblMonth" Content="January"  HorizontalAlignment="Center" Margin="0,174,0,0" Grid.Row="2" VerticalAlignment="Top"/>
-
     </Grid>
 </Window>
