@@ -24,14 +24,18 @@ namespace JoshsFinancialplanner
     public partial class MainWindow : Window
     {
         SaveLoadFunctions saveLoadFunctions = new SaveLoadFunctions();
+        
 
         public MainWindow()
         {
             InitializeComponent();
             PaymentDetails entry = new PaymentDetails { Month = "January", Amount = 999.99m,
-                DueDate = "23", Category="Living",PaymentName="Lamborghini" };
+                DueDate = "23rd", Category="Living",PaymentName="Lamborghini" };
 
             dataGridPaymentDisplay.Items.Add(entry);
+            ComboBoxInitializtion();
+
+            FrmAddPayment.NewPaymentEntry += NewPaymentEntry;
         }
 
         private void MenuNew_Click(object sender, RoutedEventArgs e)
@@ -81,31 +85,75 @@ namespace JoshsFinancialplanner
         {
             FrmAddPayment frmAddPaymen = new FrmAddPayment();
             frmAddPaymen.ShowDialog();
+            
         }
 
         private void btnEdit_Click(object sender, RoutedEventArgs e)
         {
             if(dataGridPaymentDisplay.SelectedItem != null)
             {
-                FrmAddPayment frmAddPaymen = new FrmAddPayment();
-                frmAddPaymen.ShowDialog();
+                FrmAddPayment frmAddPayment = new FrmAddPayment();
+                frmAddPayment.ShowDialog();
+                
             }
         }
 
         private void btnDelete_Click(object sender, RoutedEventArgs e)
         {
-            //dataGridPaymentDisplay;
+            var dialogResult = MessageBox.Show("Are you sure you want to delete this entry?",
+                                "Confirm Deletion",MessageBoxButton.YesNo,MessageBoxImage.Information);
+            
+            if(dialogResult == MessageBoxResult.Yes)
+            {
+                dataGridPaymentDisplay.Items.Remove(dataGridPaymentDisplay.SelectedItem);
+            }
+            else
+            {
+                return;
+            }
+            
         }
 
         private void btnFilter_Click(object sender, RoutedEventArgs e)
         {
 
-        }
+        } 
 
         private void dataGridPaymentDisplay_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            btnEdit.IsEnabled= true;
-            btnDelete.IsEnabled= true;
+            if(dataGridPaymentDisplay.SelectedItem != null)
+            {
+                
+                btnEdit.IsEnabled = true;
+                btnDelete.IsEnabled = true;
+            }
+            else
+            {
+                btnEdit.IsEnabled = false;
+                btnDelete.IsEnabled = false;
+            }
+            
+        }
+
+        private void NewPaymentEntry(PaymentDetails paymentDetails)
+        {
+            dataGridPaymentDisplay.Items.Add(paymentDetails);
+        }
+
+        private void ComboBoxInitializtion()
+        {
+            cmboMonths.Items.Add("January");
+            cmboMonths.Items.Add("Feburary");
+            cmboMonths.Items.Add("March");
+            cmboMonths.Items.Add("April");
+            cmboMonths.Items.Add("May");
+            cmboMonths.Items.Add("June");
+            cmboMonths.Items.Add("July");
+            cmboMonths.Items.Add("August");
+            cmboMonths.Items.Add("September");
+            cmboMonths.Items.Add("October");
+            cmboMonths.Items.Add("November");
+            cmboMonths.Items.Add("December");
         }
     }
 }

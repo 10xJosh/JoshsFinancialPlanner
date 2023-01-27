@@ -20,7 +20,9 @@ namespace JoshsFinancialplanner.ButtonFunctions
     /// </summary>
     public partial class FrmAddPayment : Window
     {
-        PaymentDetails paymentDetails;
+        public PaymentDetails paymentDetails;
+        public delegate void OnNewPaymentEntry(PaymentDetails paymentDetails);
+        public static event OnNewPaymentEntry NewPaymentEntry;
 
         public FrmAddPayment()
         {
@@ -30,10 +32,54 @@ namespace JoshsFinancialplanner.ButtonFunctions
 
         private void btnAdd_Click(object sender, RoutedEventArgs e)
         {
+            if(cmboCategory.SelectedItem == null) 
+            {
+                cmboCategory.SelectedItem = "Uncategorized";
+            }
+
             if (txtPaymentName.Text == "" || txtDueDate.Text == "" || txtAmount.Text == "")
             {
-                MessageBox.Show("Entries are missing. Double check everything is filled out in order to continue.", 
-                    "Error", MessageBoxButton.OK, MessageBoxImage.Information);
+                MessageBox.Show("Entries are missing. Double check everything is filled out " +
+                    "in order to add entry.", "Error", MessageBoxButton.OK, 
+                    MessageBoxImage.Information);
+            }
+            else if (txtPaymentName.Text != "" || txtDueDate.Text != "" || txtAmount.Text != "")
+            {
+                try
+                {
+                    if (txtAmount.Text.Contains("$"))
+                    {
+                        txtAmount.Text = txtAmount.Text.Replace("$", "");
+                        Convert.ToDecimal(txtAmount.Text);
+                    }
+                    
+                }
+                catch
+                {
+                    MessageBox.Show("Error: Please reenter Amount ");
+                    return;
+                }
+
+                if(decimal.TryParse(txtAmount.Text, out decimal parsedAmount))
+                {
+                    paymentDetails = new PaymentDetails
+                    {
+                        PaymentName = txtPaymentName.Text,
+                        DueDate = txtDueDate.Text,
+                        Amount = parsedAmount,
+                        Category = cmboCategory.Text
+                    };
+
+                    NewPaymentEntry(paymentDetails);
+                }
+                else
+                {
+                    
+                }
+
+
+                SaveLoadFunctions.isFileSaved = false;
+                this.Close();
             }
         }
 

@@ -14,10 +14,10 @@
         <Label Content="Due Date:" HorizontalAlignment="Left" Margin="10,72,0,0" VerticalAlignment="Top"/>
         <Label Content="Category:" HorizontalAlignment="Left" Margin="10,107,0,0" VerticalAlignment="Top"/>
 
-        <TextBox Name="txtPaymentName" HorizontalAlignment="Left" Margin="108,14,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="159"/>
-        <TextBox Name="txtAmount" HorizontalAlignment="Left" Margin="188,45,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="79"/>
-        <TextBox Name="txtDueDate" HorizontalAlignment="Left" Margin="136,76,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="132"/>
-        <ComboBox Name="cmboCategory" HorizontalAlignment="Left" Margin="108,109,0,0" VerticalAlignment="Top" Width="160"/>
+        <TextBox Name="txtPaymentName" HorizontalAlignment="Left" Margin="103,14,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="164"/>
+        <TextBox Name="txtAmount" HorizontalAlignment="Left" Margin="185,45,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="82"/>
+        <TextBox Name="txtDueDate" HorizontalAlignment="Left" Margin="118,80,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="149"/>
+        <ComboBox Name="cmboCategory" HorizontalAlignment="Left" Margin="76,109,0,0" VerticalAlignment="Top" Width="192"/>
         <Button Content="Add" Click="btnAdd_Click" HorizontalAlignment="Left" Margin="57,171,0,0" VerticalAlignment="Top"
                 Height="30" Width="70"
                 />
