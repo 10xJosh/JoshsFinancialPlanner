@@ -19,19 +19,17 @@
             <ColumnDefinition Width="181*"></ColumnDefinition>
             <ColumnDefinition Width="131*"></ColumnDefinition>
             <ColumnDefinition Width="462*"/>
-            <ColumnDefinition Width="45*"/>
+            
             <ColumnDefinition Width="6"></ColumnDefinition>
         </Grid.ColumnDefinitions>
-        <Menu Grid.Row="0" Grid.ColumnSpan="4" Background="White">
+        <Menu Grid.Row="0" Grid.ColumnSpan="4" Background="White" >
             <MenuItem Header="File">
                 <MenuItem Header="New" Click="MenuNew_Click"/>
                 <MenuItem Header="Save" Click="MenuSave_Click"/>
                 <MenuItem Header="Load" Click="MenuLoad_Click"/>
                 <MenuItem Header="Exit" Click="MenuExit_Click"/>
             </MenuItem>
-            <MenuItem Header="Edit">
-
-            </MenuItem>
+            <MenuItem Header="Edit"></MenuItem>
         </Menu>
 
         <Label Content="Monthly Payment Overview:"
@@ -40,7 +38,8 @@
                />
 
         <DataGrid Name="dataGridPaymentDisplay" Grid.Row="1" Margin="0,36,0,0" Grid.RowSpan="2" 
-                  Grid.ColumnSpan="3" Grid.Column="1" IsReadOnly="True" SelectionChanged="dataGridPaymentDisplay_SelectionChanged">
+                  Grid.ColumnSpan="3" Grid.Column="1" IsReadOnly="True" SelectionChanged="dataGridPaymentDisplay_SelectionChanged"
+                  >
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Payment Name" Width="200" Binding="{Binding PaymentName}"></DataGridTextColumn>
                 <DataGridTextColumn Header="Due Date" Width="75" Binding="{Binding DueDate}"></DataGridTextColumn>
@@ -57,8 +56,6 @@
                 Grid.Row="3" Width="85" Height="40"/>
         <Button Name="btnDelete" IsEnabled="False" Click="btnDelete_Click" Grid.Column="2" Content="Delete" Margin="290,25,87,25" 
                 Grid.Row="3" Width="85" Height="40"/>
-        <Button Name="btnFilter" Click="btnFilter_Click" Grid.Column="3" Content="Filter" Height="20" Width="40"
-                Margin="5,7,0,39" Grid.Row="1"/>
         <Label Name="lblMonth" Content="Months"  HorizontalAlignment="Center" Margin="0,150,0,0" Grid.Row="2" VerticalAlignment="Top"/>
         <ComboBox Name="cmboMonths" HorizontalAlignment="Center" Margin="0,176,0,0" Grid.Row="2" VerticalAlignment="Top" Width="120"/>
 

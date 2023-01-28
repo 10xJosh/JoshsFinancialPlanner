@@ -36,6 +36,7 @@ namespace JoshsFinancialplanner
             ComboBoxInitializtion();
 
             FrmAddPayment.NewPaymentEntry += NewPaymentEntry;
+            FrmEditPayment.ChangedPaymentEntry += ChangedPaymentEntry;
         }
 
         private void MenuNew_Click(object sender, RoutedEventArgs e)
@@ -90,12 +91,9 @@ namespace JoshsFinancialplanner
 
         private void btnEdit_Click(object sender, RoutedEventArgs e)
         {
-            if(dataGridPaymentDisplay.SelectedItem != null)
-            {
-                FrmAddPayment frmAddPayment = new FrmAddPayment();
-                frmAddPayment.ShowDialog();
-                
-            }
+            var paymentEntry = dataGridPaymentDisplay.SelectedItem as PaymentDetails;
+            FrmEditPayment frmEditPayment = new FrmEditPayment(paymentEntry);
+            frmEditPayment.ShowDialog();
         }
 
         private void btnDelete_Click(object sender, RoutedEventArgs e)
@@ -114,10 +112,6 @@ namespace JoshsFinancialplanner
             
         }
 
-        private void btnFilter_Click(object sender, RoutedEventArgs e)
-        {
-
-        } 
 
         private void dataGridPaymentDisplay_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -140,8 +134,15 @@ namespace JoshsFinancialplanner
             dataGridPaymentDisplay.Items.Add(paymentDetails);
         }
 
+        private void ChangedPaymentEntry(PaymentDetails paymentDetails)
+        {
+            dataGridPaymentDisplay.Items.Remove(dataGridPaymentDisplay.SelectedItem);
+            dataGridPaymentDisplay.Items.Add(paymentDetails);
+        }
+
         private void ComboBoxInitializtion()
         {
+            var DateTime = new DateTime();
             cmboMonths.Items.Add("January");
             cmboMonths.Items.Add("Feburary");
             cmboMonths.Items.Add("March");
@@ -154,6 +155,7 @@ namespace JoshsFinancialplanner
             cmboMonths.Items.Add("October");
             cmboMonths.Items.Add("November");
             cmboMonths.Items.Add("December");
+            cmboMonths.SelectedIndex = DateTime.Now.Month - 1;
         }
     }
 }
