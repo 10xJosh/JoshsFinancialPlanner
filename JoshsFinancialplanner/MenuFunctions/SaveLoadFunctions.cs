@@ -16,20 +16,30 @@ namespace JoshsFinancialplanner.MenuFunctions
     internal class SaveLoadFunctions
     {
         public static bool isFileSaved { get; set; }
+        public static string Path { get; set; }
 
         public SaveLoadFunctions()
         {
 
         }
 
-        public static void SaveFile()
+        public static void GetGridData(PaymentDetails[] paymentDetails)
         {
-            string path = "";
+
+        }
+
+        public static void SaveFile(List<PaymentDetails>? paymentEntries)
+        {
+            if(paymentEntries == null)
+            {
+                return;
+            }
+
             SaveFileDialog saveFileDialog= new SaveFileDialog();
 
             saveFileDialog.Title = "Select Location to Save file";
             saveFileDialog.Filter = "Josh's Financial Planner (*.jfp)|*.jfp";
-            saveFileDialog.CheckFileExists = true;
+            saveFileDialog.CheckFileExists = false;
             saveFileDialog.CheckPathExists = true;
             saveFileDialog.ShowDialog();
 
@@ -39,7 +49,7 @@ namespace JoshsFinancialplanner.MenuFunctions
 
             if (saveFileDialog.FileName != "")
             {
-                path = saveFileDialog.FileName;
+                Path = saveFileDialog.FileName;
             }
             else
             {
@@ -48,14 +58,14 @@ namespace JoshsFinancialplanner.MenuFunctions
 
             try
             {
-                
-                PaymentDetails overview = new PaymentDetails();
-                XmlSerializer writer = new XmlSerializer(typeof(PaymentDetails));
+                XmlSerializer writer = new XmlSerializer(typeof(List<PaymentDetails>));
 
-                FileStream file = File.Create(path);
+                using (FileStream fs = File.Create(Path))
+                {
+                    writer.Serialize(fs, paymentEntries);
+                    fs.Close();
+                }
 
-                writer.Serialize(file, overview);
-                file.Close();
             }
             catch(Exception ex)
             {
@@ -63,6 +73,30 @@ namespace JoshsFinancialplanner.MenuFunctions
             }
 
             isFileSaved = true;
+        }
+        // This function is used so that the SaveFileDialog box doesn't appear
+        public static void ExpressSave(List<PaymentDetails>? paymentEntries)
+        {
+            if(Path != null)
+            {
+                try
+                {
+                    XmlSerializer writer = new XmlSerializer(typeof(List<PaymentDetails>));
+
+                    using (FileStream fs = File.Create(Path))
+                    {
+                        writer.Serialize(fs, paymentEntries);
+                        fs.Close();
+                    }
+                }
+                catch
+                {
+                    SaveFile(paymentEntries);
+                }
+            } else
+            {
+                SaveFile(paymentEntries);
+            }
         }
 
         public static void LoadFile()
@@ -93,6 +127,7 @@ namespace JoshsFinancialplanner.MenuFunctions
                 StreamReader file = new StreamReader((Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + "/SerializationOverview.jfp"));
                 PaymentDetails overview = (PaymentDetails)reader.Deserialize(file);
                 file.Close();
+                return;
             }
             catch (Exception ex)
             {

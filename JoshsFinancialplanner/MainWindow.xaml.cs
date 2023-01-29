@@ -23,30 +23,64 @@ namespace JoshsFinancialplanner
     /// </summary>
     public partial class MainWindow : Window
     {
-        SaveLoadFunctions saveLoadFunctions = new SaveLoadFunctions();
-        
+        List<PaymentDetails>? paymentEntryData = new List<PaymentDetails>();
 
         public MainWindow()
         {
             InitializeComponent();
-            PaymentDetails entry = new PaymentDetails { Month = "January", Amount = "999.99",
-                DueDate = "23rd", Category="Living",PaymentName="Lamborghini" };
+            PaymentDetails entry = new PaymentDetails { 
+                Month = "January", Amount = "1",
+                DueDate = "25rd", Category="Living",
+                PaymentName="Yeeahw" };
+
+            PaymentDetails entry2 = new PaymentDetails
+            {
+                Month = "January",
+                Amount = "999.99",
+                DueDate = "23rd",
+                Category = "Living",
+                PaymentName = "Lamborghini"
+            };
 
             dataGridPaymentDisplay.Items.Add(entry);
+            dataGridPaymentDisplay.Items.Add(entry2);
             ComboBoxInitializtion();
 
             FrmAddPayment.NewPaymentEntry += NewPaymentEntry;
             FrmEditPayment.ChangedPaymentEntry += ChangedPaymentEntry;
         }
 
+        
+
         private void MenuNew_Click(object sender, RoutedEventArgs e)
         {
-            
+            if(SaveLoadFunctions.isFileSaved == false)
+            {
+                var dialogresult = MessageBox.Show("Would you like to save your changes?",
+                    "Changes Unsaved",MessageBoxButton.YesNo, MessageBoxImage.Question);
+                if(dialogresult == MessageBoxResult.Yes)
+                {
+                    GetPaymentEntryData();
+                    SaveLoadFunctions.ExpressSave(paymentEntryData);
+                    MessageBox.Show("Saved");
+                }
+                else if (dialogresult == MessageBoxResult.No)  
+                {
+                    //TODO: Implement new grid file data
+                }
+            }
         }
 
         private void MenuSave_Click(object sender, RoutedEventArgs e)
         {
-            SaveLoadFunctions.SaveFile();
+            GetPaymentEntryData();
+            SaveLoadFunctions.ExpressSave(paymentEntryData);
+        }
+
+        private void MenuSaveAs_Click(object sender, RoutedEventArgs e)
+        {
+            GetPaymentEntryData();
+            SaveLoadFunctions.SaveFile(paymentEntryData);
         }
 
         private void MenuLoad_Click(object sender, RoutedEventArgs e)
@@ -64,7 +98,8 @@ namespace JoshsFinancialplanner
 
                 if(dialogResult == MessageBoxResult.Yes)
                 {
-                    SaveLoadFunctions.SaveFile();
+                    GetPaymentEntryData();
+                    SaveLoadFunctions.SaveFile(paymentEntryData);
                     this.Close();
                 }
                 else if (dialogResult == MessageBoxResult.No)
@@ -155,6 +190,21 @@ namespace JoshsFinancialplanner
             cmboMonths.Items.Add("November");
             cmboMonths.Items.Add("December");
             cmboMonths.SelectedIndex = DateTime.Now.Month - 1;
+        }
+
+        private void GetPaymentEntryData()
+        {
+            if (dataGridPaymentDisplay.Items != null)
+            {
+                foreach (var item in dataGridPaymentDisplay.Items)
+                {
+                    paymentEntryData.Add(item as PaymentDetails);
+                }
+            }
+            else
+            {
+                return;
+            }
         }
     }
 }

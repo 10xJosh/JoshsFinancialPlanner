@@ -44,7 +44,7 @@ namespace JoshsFinancialplanner.ButtonFunctions
             cmboCategory.Text = paymentDetails.Category;
         }
         
-        //THIS CLASS WAS COPIED OVER, MAKE SURE ANY MAJOR CHANGES ARE REFLECTED ON FrmAddPayment
+        //MAKE SURE ANY MAJOR CHANGES ARE REFLECTED ON FrmAddPayment
         private void btnAdd_Click(object sender, RoutedEventArgs e)
         {
             decimal _txtAmount;
