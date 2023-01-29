@@ -1,4 +1,5 @@
 ﻿using JoshsFinancialplanner.MenuFunctions;
+using JoshsFinancialplanner.ButtonFunctions.HelperFunctions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,9 +21,11 @@ namespace JoshsFinancialplanner.ButtonFunctions
     /// </summary>
     public partial class FrmEditPayment : Window
     {
-        PaymentDetails paymentDetails;
+        
         public delegate void OnChangedPaymentEntry(PaymentDetails paymentDetails);
         public static event OnChangedPaymentEntry ChangedPaymentEntry;
+        InputChecks inputChecks = new InputChecks();
+        PaymentDetails paymentDetails;
 
         public FrmEditPayment()
         {
@@ -36,7 +39,7 @@ namespace JoshsFinancialplanner.ButtonFunctions
             ComboBoxSettings();
 
             txtPaymentName.Text = paymentDetails.PaymentName;
-            txtAmount.Text = paymentDetails.Amount.ToString();
+            txtAmount.Text = paymentDetails.Amount;
             txtDueDate.Text = paymentDetails.DueDate;
             cmboCategory.Text = paymentDetails.Category;
         }
@@ -44,6 +47,8 @@ namespace JoshsFinancialplanner.ButtonFunctions
         //THIS CLASS WAS COPIED OVER, MAKE SURE ANY MAJOR CHANGES ARE REFLECTED ON FrmAddPayment
         private void btnAdd_Click(object sender, RoutedEventArgs e)
         {
+            decimal _txtAmount;
+
             if (cmboCategory.SelectedItem == null)
             {
                 cmboCategory.SelectedItem = "Uncategorized";
@@ -57,18 +62,32 @@ namespace JoshsFinancialplanner.ButtonFunctions
             }
             else if (txtPaymentName.Text != "" || txtDueDate.Text != "" || txtAmount.Text != "")
             {
+                if(inputChecks.isPaymentNameShort(txtPaymentName.Text))
+                {
+                    MessageBox.Show("Payment name is too long. Please shorten the","Error",
+                        MessageBoxButton.OK, MessageBoxImage.Information);
+                    return;
+                }
+                else if (inputChecks.isDueDateInputShort(txtDueDate.Text))
+                {
+                    MessageBox.Show("Due Date entry is too long. Please reenter it in order to continue",
+                        "Error", MessageBoxButton.OK, MessageBoxImage.Information);
+                    return;
+                }
+
                 try
                 {
                     if (txtAmount.Text.Contains("$"))
                     {
                         txtAmount.Text = txtAmount.Text.Replace("$", "");
-                        Convert.ToDecimal(txtAmount.Text);
+                        _txtAmount = Convert.ToDecimal(txtAmount.Text);
+                        Math.Round(_txtAmount);
                     }
 
                 }
                 catch
                 {
-                    MessageBox.Show("Error: Please reenter Amount ");
+                    MessageBox.Show("Error: Please reenter the Amount.");
                     return;
                 }
 
@@ -78,7 +97,7 @@ namespace JoshsFinancialplanner.ButtonFunctions
                     {
                         PaymentName = txtPaymentName.Text,
                         DueDate = txtDueDate.Text,
-                        Amount = parsedAmount,
+                        Amount = $"${Math.Round(parsedAmount)}",
                         Category = cmboCategory.Text
                     };
 
@@ -86,6 +105,8 @@ namespace JoshsFinancialplanner.ButtonFunctions
                 }
                 else
                 {
+                    MessageBox.Show("Error: Please reenter the amount. ", "Error", MessageBoxButton.OK,
+                        MessageBoxImage.Error);
                     return;
                 }
 

@@ -29,7 +29,7 @@ namespace JoshsFinancialplanner
         public MainWindow()
         {
             InitializeComponent();
-            PaymentDetails entry = new PaymentDetails { Month = "January", Amount = 999.99m,
+            PaymentDetails entry = new PaymentDetails { Month = "January", Amount = "999.99",
                 DueDate = "23rd", Category="Living",PaymentName="Lamborghini" };
 
             dataGridPaymentDisplay.Items.Add(entry);
@@ -142,7 +142,6 @@ namespace JoshsFinancialplanner
 
         private void ComboBoxInitializtion()
         {
-            var DateTime = new DateTime();
             cmboMonths.Items.Add("January");
             cmboMonths.Items.Add("Feburary");
             cmboMonths.Items.Add("March");

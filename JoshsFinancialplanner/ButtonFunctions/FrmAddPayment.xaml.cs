@@ -1,4 +1,5 @@
-﻿using JoshsFinancialplanner.MenuFunctions;
+﻿using JoshsFinancialplanner.ButtonFunctions.HelperFunctions;
+using JoshsFinancialplanner.MenuFunctions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,9 +21,11 @@ namespace JoshsFinancialplanner.ButtonFunctions
     /// </summary>
     public partial class FrmAddPayment : Window
     {
-        public PaymentDetails paymentDetails;
+        
         public delegate void OnNewPaymentEntry(PaymentDetails paymentDetails);
         public static event OnNewPaymentEntry NewPaymentEntry;
+        InputChecks inputChecks = new InputChecks();
+        public PaymentDetails paymentDetails;
 
         public FrmAddPayment()
         {
@@ -32,7 +35,9 @@ namespace JoshsFinancialplanner.ButtonFunctions
 
         private void btnAdd_Click(object sender, RoutedEventArgs e)
         {
-            if(cmboCategory.SelectedItem == null) 
+            decimal _txtAmount;
+
+            if (cmboCategory.SelectedItem == null) 
             {
                 cmboCategory.SelectedItem = "Uncategorized";
             }
@@ -45,28 +50,43 @@ namespace JoshsFinancialplanner.ButtonFunctions
             }
             else if (txtPaymentName.Text != "" || txtDueDate.Text != "" || txtAmount.Text != "")
             {
+                if (inputChecks.isPaymentNameShort(txtPaymentName.Text))
+                {
+                    MessageBox.Show("Payment name is too long. Please shorten the", "Error",
+                        MessageBoxButton.OK, MessageBoxImage.Information);
+                    return;
+                }
+                else if (inputChecks.isDueDateInputShort(txtDueDate.Text))
+                {
+                    MessageBox.Show("Due Date entry is too long. Please reenter it in order to continue",
+                        "Error", MessageBoxButton.OK, MessageBoxImage.Information);
+                    return;
+                }
+
                 try
                 {
                     if (txtAmount.Text.Contains("$"))
                     {
                         txtAmount.Text = txtAmount.Text.Replace("$", "");
-                        Convert.ToDecimal(txtAmount.Text);
+                        _txtAmount = Convert.ToDecimal(txtAmount.Text);
+                        Math.Round(_txtAmount, 1);
                     }
-                    
                 }
                 catch
                 {
-                    MessageBox.Show("Error: Please reenter Amount ");
+                    MessageBox.Show("Error: Please reenter the amount. ","Error",MessageBoxButton.OK,
+                        MessageBoxImage.Information);
                     return;
                 }
 
                 if(decimal.TryParse(txtAmount.Text, out decimal parsedAmount))
                 {
+
                     paymentDetails = new PaymentDetails
                     {
                         PaymentName = txtPaymentName.Text,
                         DueDate = txtDueDate.Text,
-                        Amount = parsedAmount,
+                        Amount = $"${Math.Round(parsedAmount)}",
                         Category = cmboCategory.Text
                     };
 
@@ -74,7 +94,9 @@ namespace JoshsFinancialplanner.ButtonFunctions
                 }
                 else
                 {
-                    
+                    MessageBox.Show("Error: Please reenter the amount. ", "Error", MessageBoxButton.OK,
+                        MessageBoxImage.Error);
+                    return;
                 }
 
 

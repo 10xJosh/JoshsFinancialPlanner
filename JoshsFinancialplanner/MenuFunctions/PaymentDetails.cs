@@ -11,9 +11,8 @@ namespace JoshsFinancialplanner.MenuFunctions
         public string Month { get; set; }
         public string PaymentName { get; set; }
         public string DueDate { get; set; }
-        public string Year { get; set; }
         public string Category { get; set; }
-        public decimal Amount { get; set; }
+        public string Amount { get; set; }
 
     }
 }
