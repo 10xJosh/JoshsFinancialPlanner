@@ -85,8 +85,15 @@ namespace JoshsFinancialplanner
 
         private void MenuLoad_Click(object sender, RoutedEventArgs e)
         {
-            SaveLoadFunctions.LoadFile();
+            /*
+            var entryData = SaveLoadFunctions.LoadFile();
 
+            foreach (var entry in entryData)
+            {
+                dataGridPaymentDisplay.Items.Add(entry);
+            }
+            MessageBox.Show("Loading complete!");
+            */
         }
 
         private void MenuExit_Click(object sender, RoutedEventArgs e)
@@ -99,7 +106,7 @@ namespace JoshsFinancialplanner
                 if(dialogResult == MessageBoxResult.Yes)
                 {
                     GetPaymentEntryData();
-                    SaveLoadFunctions.SaveFile(paymentEntryData);
+                    SaveLoadFunctions.ExpressSave(paymentEntryData);
                     this.Close();
                 }
                 else if (dialogResult == MessageBoxResult.No)

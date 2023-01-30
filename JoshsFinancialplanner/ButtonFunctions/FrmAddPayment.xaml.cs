@@ -91,6 +91,8 @@ namespace JoshsFinancialplanner.ButtonFunctions
                     };
 
                     NewPaymentEntry(paymentDetails);
+
+                    this.Close();
                 }
                 else
                 {
@@ -101,7 +103,7 @@ namespace JoshsFinancialplanner.ButtonFunctions
 
 
                 SaveLoadFunctions.isFileSaved = false;
-                this.Close();
+                
             }
         }
 

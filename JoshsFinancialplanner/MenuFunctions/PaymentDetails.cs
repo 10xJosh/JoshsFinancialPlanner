@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace JoshsFinancialplanner.MenuFunctions
 {
-    public class PaymentDetails
+    public class PaymentDetails : IEnumerable
     {
         public string Month { get; set; }
         public string PaymentName { get; set; }
@@ -15,4 +15,15 @@ namespace JoshsFinancialplanner.MenuFunctions
         public string Amount { get; set; }
 
     }
+
+    public interface IEnumerable
+    {
+    }
+
+    /*
+    public PaymentDetails ConvertPaymentEntriesToClass(List<PaymentDetails> paymentEntries)
+    {
+        
+    }
+    */
 }

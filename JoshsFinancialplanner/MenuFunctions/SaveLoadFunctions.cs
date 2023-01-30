@@ -10,13 +10,15 @@ using System.Runtime.Serialization;
 using System.Xml.Serialization;
 using Microsoft.Win32;
 using System.Windows;
+using static JoshsFinancialplanner.ButtonFunctions.FrmAddPayment;
 
 namespace JoshsFinancialplanner.MenuFunctions
 {
     internal class SaveLoadFunctions
     {
+        public static event OnNewPaymentEntry NewPaymentEntry;
         public static bool isFileSaved { get; set; }
-        public static string Path { get; set; }
+        public static string? Path { get; set; }
 
         public SaveLoadFunctions()
         {
@@ -81,11 +83,11 @@ namespace JoshsFinancialplanner.MenuFunctions
             {
                 try
                 {
-                    XmlSerializer writer = new XmlSerializer(typeof(List<PaymentDetails>));
+                    XmlSerializer xmlSerializer = new XmlSerializer(typeof(PaymentDetails));
 
                     using (FileStream fs = File.Create(Path))
                     {
-                        writer.Serialize(fs, paymentEntries);
+                        xmlSerializer.Serialize(fs, paymentEntries);
                         fs.Close();
                     }
                 }
@@ -98,12 +100,14 @@ namespace JoshsFinancialplanner.MenuFunctions
                 SaveFile(paymentEntries);
             }
         }
-
+        
         public static void LoadFile()
         {
             string path = "";
-            OpenFileDialog openFileDialog = new OpenFileDialog();
+            List<PaymentDetails>? paymentEntries = new List<PaymentDetails>();
 
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.ShowDialog();
             openFileDialog.Title = "Select a File";
             openFileDialog.Filter = "Josh's Financial Planner (*.jfp)|*.jfp";
 
@@ -115,28 +119,36 @@ namespace JoshsFinancialplanner.MenuFunctions
             {
                 path = openFileDialog.FileName;
             }
-            else
-            {
-                return;
-            }
 
             try
             {
                 path = openFileDialog.FileName;
-                XmlSerializer reader = new XmlSerializer(typeof(PaymentDetails));
-                StreamReader file = new StreamReader((Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + "/SerializationOverview.jfp"));
-                PaymentDetails overview = (PaymentDetails)reader.Deserialize(file);
-                file.Close();
-                return;
+                XmlSerializer xmlSerializer = new XmlSerializer(typeof(PaymentDetails));
+                PaymentDetails storage = new PaymentDetails();
+
+                using(StreamReader selectedFile = new StreamReader(path))
+                {
+                    storage = xmlSerializer.Deserialize(selectedFile) as PaymentDetails;
+                }
+
+                foreach (var item in storage)
+                {
+                    MessageBox.Show(item.pay)
+                }
+                /*
+                foreach (var entry in storage)
+                {
+                    paymentEntries.Add(entry);
+                }*/
+
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
 
+            return;
         }
-
-
-
+        
     }
 }
