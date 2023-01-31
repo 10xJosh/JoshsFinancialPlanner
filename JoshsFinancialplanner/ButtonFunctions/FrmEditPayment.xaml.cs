@@ -16,12 +16,8 @@ using System.Windows.Shapes;
 
 namespace JoshsFinancialplanner.ButtonFunctions
 {
-    /// <summary>
-    /// Edit Payment Form
-    /// </summary>
     public partial class FrmEditPayment : Window
     {
-        
         public delegate void OnChangedPaymentEntry(PaymentDetails paymentDetails);
         public static event OnChangedPaymentEntry ChangedPaymentEntry;
         InputChecks inputChecks = new InputChecks();

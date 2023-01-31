@@ -47,9 +47,6 @@
                 <DataGridTextColumn Header="Amount" Width="75" Binding="{Binding Amount}"></DataGridTextColumn>
                 <DataGridTextColumn Header="Category" Width="100" Binding="{Binding Category}"></DataGridTextColumn>
             </DataGrid.Columns>
-            <DataGrid.Resources>
-
-            </DataGrid.Resources>
         </DataGrid>
         <Button Name="btnAdd" Click="btnAdd_Click" Grid.Column="2" Content="Add" Margin="27,25,350,25" 
                 Grid.Row="3" Width="85" Height="40"/>
@@ -60,7 +57,8 @@
         <Label Name="lblMonth" Content="Months"  HorizontalAlignment="Center" Margin="0,150,0,0" 
                Grid.Row="2" VerticalAlignment="Top"/>
         <ComboBox Name="cmboMonths" HorizontalAlignment="Center" Margin="0,176,0,0" Grid.Row="2" 
-                  VerticalAlignment="Top" Width="120" SelectionChanged="cmboMonths_Changed"/>
+                  VerticalAlignment="Top" Width="120" SelectionChanged="cmboMonths_SelectionChanged"
+                  />
 
     </Grid>
 </Window>

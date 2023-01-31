@@ -18,24 +18,9 @@ using System.Windows.Shapes;
 
 namespace JoshsFinancialplanner
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
     public partial class MainWindow : Window
     {
-        // This string is here to get the month selection without having to pass it as a argument 
-        // in the save functions.
-        public string Month { get; set; }
         List<PaymentDetails>? paymentEntryData = new List<PaymentDetails>();
-
-        PaymentDetails entry2 = new PaymentDetails
-        {
-            Month = "January",
-            Amount = "999.99",
-            DueDate = "23rd",
-            Category = "Living",
-            PaymentName = "Lamborghini"
-        };
 
         public MainWindow()
         {
@@ -71,7 +56,7 @@ namespace JoshsFinancialplanner
                 }
                 else if (dialogresult == MessageBoxResult.No)  
                 {
-                    //TODO: Implement new grid file data
+                    dataGridPaymentDisplay.Items.Clear();
                 }
             }
         }
@@ -90,16 +75,23 @@ namespace JoshsFinancialplanner
 
         private void MenuLoad_Click(object sender, RoutedEventArgs e)
         {
-            var entries = SaveLoadFunctions.LoadFile();
-            entries = paymentEntryData;
-            var result = from entry in paymentEntryData
-                         where entry.Month == cmboMonths.SelectedItem.ToString()
-                         select entry;
-
-            foreach (var entry in result)
+            try
             {
-                dataGridPaymentDisplay.Items.Add(entry);
+                var entries = SaveLoadFunctions.LoadFile();
+                paymentEntryData = entries;
+                var result = from entry in paymentEntryData
+                             where entry.Month == cmboMonths.Text
+                             select entry;
+
+                foreach (var entry in result)
+                {
+                    dataGridPaymentDisplay.Items.Add(entry);
+                }
+            }catch(Exception)
+            {
+                MessageBox.Show("There was an error loading the file. Make sure that it is not an empty file.");
             }
+
             
         }
 
@@ -135,7 +127,6 @@ namespace JoshsFinancialplanner
         {
             FrmAddPayment frmAddPaymen = new FrmAddPayment();
             frmAddPaymen.ShowDialog();
-            
         }
 
         private void btnEdit_Click(object sender, RoutedEventArgs e)
@@ -153,6 +144,7 @@ namespace JoshsFinancialplanner
             if(dialogResult == MessageBoxResult.Yes)
             {
                 dataGridPaymentDisplay.Items.Remove(dataGridPaymentDisplay.SelectedItem);
+                SaveLoadFunctions.isFileSaved = false;
             }
             else
             {
@@ -177,15 +169,16 @@ namespace JoshsFinancialplanner
             
         }
 
-        private void cmboMonths_Changed(object sender, SelectionChangedEventArgs e)
+        private void cmboMonths_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            //TODO: add this function into a seperate function to be called when the selection has been changed.
+
             if (paymentEntryData != null)
             {
                 var filterByMonth = from entry in paymentEntryData
-                                    where entry.Month == cmboMonths.SelectedItem.ToString()
+                                    where entry.Month == cmboMonths.Text
                                     select entry;
 
-                SaveLoadFunctions.ExpressSave(paymentEntryData);
 
                 dataGridPaymentDisplay.Items.Clear();
 
@@ -196,17 +189,27 @@ namespace JoshsFinancialplanner
             }
             else
             {
+                MessageBox.Show("payment data is null");
                 return;
             }
         }
 
         private void NewPaymentEntry(PaymentDetails paymentDetails)
         {
+            //cmboMonths is inaccessible outside MainWindow so the data is added here
+            paymentDetails.Month = cmboMonths.Text;
+            paymentEntryData.Add(paymentDetails);
             dataGridPaymentDisplay.Items.Add(paymentDetails);
         }
 
         private void ChangedPaymentEntry(PaymentDetails paymentDetails)
         {
+            //This is here to make sure that the edited data is updated within memory
+            if (paymentEntryData.Contains(dataGridPaymentDisplay.SelectedItem as PaymentDetails))
+            {
+                paymentEntryData.Remove(dataGridPaymentDisplay.SelectedItem as PaymentDetails);
+                paymentEntryData.Add(paymentDetails);
+            }
             dataGridPaymentDisplay.Items.Remove(dataGridPaymentDisplay.SelectedItem);
             dataGridPaymentDisplay.Items.Add(paymentDetails);
         }
@@ -230,8 +233,6 @@ namespace JoshsFinancialplanner
 
         private void GetPaymentEntryData()
         {
-            //List<PaymentDetails> _paymentDetails = new List<PaymentDetails>();
-
             if (dataGridPaymentDisplay.Items != null)
             {
                 foreach (var item in dataGridPaymentDisplay.Items)
@@ -248,7 +249,5 @@ namespace JoshsFinancialplanner
                 return;
             }
         }
-
-
     }
 }

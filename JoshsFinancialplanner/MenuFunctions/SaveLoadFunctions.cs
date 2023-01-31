@@ -20,16 +20,6 @@ namespace JoshsFinancialplanner.MenuFunctions
         public static bool isFileSaved { get; set; }
         public static string? Path { get; set; }
 
-        public SaveLoadFunctions()
-        {
-
-        }
-
-        public static void GetGridData(PaymentDetails[] paymentDetails)
-        {
-
-        }
-
         public static void SaveFile(List<PaymentDetails>? paymentEntries)
         {
             if(paymentEntries == null)
@@ -44,10 +34,6 @@ namespace JoshsFinancialplanner.MenuFunctions
             saveFileDialog.CheckFileExists = false;
             saveFileDialog.CheckPathExists = true;
             saveFileDialog.ShowDialog();
-
-            // TODO: Loop through entries entered and save them to the file
-            // TODO: Use "using" instead of file.Close();
-            // TODO: impliment isolated storage
 
             if (saveFileDialog.FileName != "")
             {
@@ -90,12 +76,14 @@ namespace JoshsFinancialplanner.MenuFunctions
                         xmlSerializer.Serialize(fs, paymentEntries);
                         fs.Close();
                     }
+                    isFileSaved = true;
                 }
                 catch
                 {
                     SaveFile(paymentEntries);
                 }
-            } else
+            } 
+            else
             {
                 SaveFile(paymentEntries);
             }
@@ -137,10 +125,6 @@ namespace JoshsFinancialplanner.MenuFunctions
             openFileDialog.Title = "Select a File";
             openFileDialog.Filter = "Josh's Financial Planner (*.jfp)|*.jfp";
             openFileDialog.ShowDialog();
-
-            // TODO: Loop through entries entered and load them to the Program
-            // TODO: Use "using" instead of file.Close();
-            // TODO: impliment isolated storage
 
             if (openFileDialog.FileName != "")
             {
