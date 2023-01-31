@@ -23,7 +23,19 @@ namespace JoshsFinancialplanner
     /// </summary>
     public partial class MainWindow : Window
     {
+        // This string is here to get the month selection without having to pass it as a argument 
+        // in the save functions.
+        public string Month { get; set; }
         List<PaymentDetails>? paymentEntryData = new List<PaymentDetails>();
+
+        PaymentDetails entry2 = new PaymentDetails
+        {
+            Month = "January",
+            Amount = "999.99",
+            DueDate = "23rd",
+            Category = "Living",
+            PaymentName = "Lamborghini"
+        };
 
         public MainWindow()
         {
@@ -33,17 +45,10 @@ namespace JoshsFinancialplanner
                 DueDate = "25rd", Category="Living",
                 PaymentName="Yeeahw" };
 
-            PaymentDetails entry2 = new PaymentDetails
-            {
-                Month = "January",
-                Amount = "999.99",
-                DueDate = "23rd",
-                Category = "Living",
-                PaymentName = "Lamborghini"
-            };
+       
 
             dataGridPaymentDisplay.Items.Add(entry);
-            dataGridPaymentDisplay.Items.Add(entry2);
+            
             ComboBoxInitializtion();
 
             FrmAddPayment.NewPaymentEntry += NewPaymentEntry;
@@ -85,15 +90,17 @@ namespace JoshsFinancialplanner
 
         private void MenuLoad_Click(object sender, RoutedEventArgs e)
         {
-            /*
-            var entryData = SaveLoadFunctions.LoadFile();
+            var entries = SaveLoadFunctions.LoadFile();
+            entries = paymentEntryData;
+            var result = from entry in paymentEntryData
+                         where entry.Month == cmboMonths.SelectedItem.ToString()
+                         select entry;
 
-            foreach (var entry in entryData)
+            foreach (var entry in result)
             {
                 dataGridPaymentDisplay.Items.Add(entry);
             }
-            MessageBox.Show("Loading complete!");
-            */
+            
         }
 
         private void MenuExit_Click(object sender, RoutedEventArgs e)
@@ -159,7 +166,6 @@ namespace JoshsFinancialplanner
         {
             if(dataGridPaymentDisplay.SelectedItem != null)
             {
-                
                 btnEdit.IsEnabled = true;
                 btnDelete.IsEnabled = true;
             }
@@ -169,6 +175,29 @@ namespace JoshsFinancialplanner
                 btnDelete.IsEnabled = false;
             }
             
+        }
+
+        private void cmboMonths_Changed(object sender, SelectionChangedEventArgs e)
+        {
+            if (paymentEntryData != null)
+            {
+                var filterByMonth = from entry in paymentEntryData
+                                    where entry.Month == cmboMonths.SelectedItem.ToString()
+                                    select entry;
+
+                SaveLoadFunctions.ExpressSave(paymentEntryData);
+
+                dataGridPaymentDisplay.Items.Clear();
+
+                foreach (var entry in filterByMonth)
+                {
+                    dataGridPaymentDisplay.Items.Add(entry);
+                }
+            }
+            else
+            {
+                return;
+            }
         }
 
         private void NewPaymentEntry(PaymentDetails paymentDetails)
@@ -201,11 +230,17 @@ namespace JoshsFinancialplanner
 
         private void GetPaymentEntryData()
         {
+            //List<PaymentDetails> _paymentDetails = new List<PaymentDetails>();
+
             if (dataGridPaymentDisplay.Items != null)
             {
                 foreach (var item in dataGridPaymentDisplay.Items)
                 {
                     paymentEntryData.Add(item as PaymentDetails);
+                }
+                foreach (var entry in paymentEntryData)
+                {
+                    entry.Month = cmboMonths.SelectedItem.ToString();
                 }
             }
             else
@@ -213,5 +248,7 @@ namespace JoshsFinancialplanner
                 return;
             }
         }
+
+
     }
 }

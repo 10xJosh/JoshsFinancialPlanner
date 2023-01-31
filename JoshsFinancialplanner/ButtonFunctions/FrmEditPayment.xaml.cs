@@ -38,6 +38,7 @@ namespace JoshsFinancialplanner.ButtonFunctions
             InitializeComponent();
             ComboBoxSettings();
 
+
             txtPaymentName.Text = paymentDetails.PaymentName;
             txtAmount.Text = paymentDetails.Amount;
             txtDueDate.Text = paymentDetails.DueDate;

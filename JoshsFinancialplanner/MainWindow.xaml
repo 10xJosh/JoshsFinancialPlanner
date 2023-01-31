@@ -57,8 +57,10 @@
                 Grid.Row="3" Width="85" Height="40"/>
         <Button Name="btnDelete" IsEnabled="False" Click="btnDelete_Click" Grid.Column="2" Content="Delete" Margin="290,25,87,25" 
                 Grid.Row="3" Width="85" Height="40"/>
-        <Label Name="lblMonth" Content="Months"  HorizontalAlignment="Center" Margin="0,150,0,0" Grid.Row="2" VerticalAlignment="Top"/>
-        <ComboBox Name="cmboMonths" HorizontalAlignment="Center" Margin="0,176,0,0" Grid.Row="2" VerticalAlignment="Top" Width="120"/>
+        <Label Name="lblMonth" Content="Months"  HorizontalAlignment="Center" Margin="0,150,0,0" 
+               Grid.Row="2" VerticalAlignment="Top"/>
+        <ComboBox Name="cmboMonths" HorizontalAlignment="Center" Margin="0,176,0,0" Grid.Row="2" 
+                  VerticalAlignment="Top" Width="120" SelectionChanged="cmboMonths_Changed"/>
 
     </Grid>
 </Window>

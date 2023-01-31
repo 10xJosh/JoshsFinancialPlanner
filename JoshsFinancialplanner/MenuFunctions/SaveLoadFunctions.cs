@@ -76,14 +76,14 @@ namespace JoshsFinancialplanner.MenuFunctions
 
             isFileSaved = true;
         }
-        // This function is used so that the SaveFileDialog box doesn't appear
+        // This function is used for situations where SaveFileDialog box shouldnt appear
         public static void ExpressSave(List<PaymentDetails>? paymentEntries)
         {
             if(Path != null)
             {
                 try
                 {
-                    XmlSerializer xmlSerializer = new XmlSerializer(typeof(PaymentDetails));
+                    XmlSerializer xmlSerializer = new XmlSerializer(typeof(List<PaymentDetails>));
 
                     using (FileStream fs = File.Create(Path))
                     {
@@ -100,16 +100,43 @@ namespace JoshsFinancialplanner.MenuFunctions
                 SaveFile(paymentEntries);
             }
         }
+
+        // This method is called when month selection is changed so that no data is lost when
+        // switching between months in the user interface.
+        public static void MonthExpressSave(List<PaymentDetails>? paymentEntries, string month) 
+        {
+            if (Path != null)
+            {
+                try
+                {
+                    XmlSerializer xmlSerializer = new XmlSerializer(typeof(List<PaymentDetails>));
+
+                    using (FileStream fs = File.Create(Path))
+                    {
+                        xmlSerializer.Serialize(fs, paymentEntries);
+                        fs.Close();
+                    }
+                }
+                catch
+                {
+                    SaveFile(paymentEntries);
+                }
+            }
+            else
+            {
+                SaveFile(paymentEntries);
+            }
+        }
         
-        public static void LoadFile()
+        public static List<PaymentDetails> LoadFile()
         {
             string path = "";
             List<PaymentDetails>? paymentEntries = new List<PaymentDetails>();
 
             OpenFileDialog openFileDialog = new OpenFileDialog();
-            openFileDialog.ShowDialog();
             openFileDialog.Title = "Select a File";
             openFileDialog.Filter = "Josh's Financial Planner (*.jfp)|*.jfp";
+            openFileDialog.ShowDialog();
 
             // TODO: Loop through entries entered and load them to the Program
             // TODO: Use "using" instead of file.Close();
@@ -123,31 +150,21 @@ namespace JoshsFinancialplanner.MenuFunctions
             try
             {
                 path = openFileDialog.FileName;
-                XmlSerializer xmlSerializer = new XmlSerializer(typeof(PaymentDetails));
-                PaymentDetails storage = new PaymentDetails();
+                XmlSerializer xmlSerializer = new XmlSerializer(typeof(List<PaymentDetails>));
 
                 using(StreamReader selectedFile = new StreamReader(path))
                 {
-                    storage = xmlSerializer.Deserialize(selectedFile) as PaymentDetails;
+                    paymentEntries = xmlSerializer.Deserialize(selectedFile) as List<PaymentDetails>;
                 }
 
-                foreach (var item in storage)
-                {
-                    MessageBox.Show(item.pay)
-                }
-                /*
-                foreach (var entry in storage)
-                {
-                    paymentEntries.Add(entry);
-                }*/
-
+                return paymentEntries;
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
 
-            return;
+            return null;
         }
         
     }
