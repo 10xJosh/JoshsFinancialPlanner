@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:JoshsFinancialplanner"
         mc:Ignorable="d"
-        Title="Josh's Finnaical Planner" Height="450" Width="825" MinHeight="450" MinWidth="845"
+        Title="Josh's Monthly Expense Tracker" Height="450" Width="825" MinHeight="450" MinWidth="845"
         WindowStartupLocation="CenterScreen" SizeToContent="Manual" ResizeMode="CanResize"
         >
     <Grid>
@@ -19,7 +19,7 @@
             <ColumnDefinition Width="181*"></ColumnDefinition>
             <ColumnDefinition Width="131*"></ColumnDefinition>
             <ColumnDefinition Width="462*"/>
-            
+
             <ColumnDefinition Width="6"></ColumnDefinition>
         </Grid.ColumnDefinitions>
         <Menu Grid.Row="0" Grid.ColumnSpan="4" Background="White" >
@@ -54,11 +54,30 @@
                 Grid.Row="3" Width="85" Height="40"/>
         <Button Name="btnDelete" IsEnabled="False" Click="btnDelete_Click" Grid.Column="2" Content="Delete" Margin="290,25,87,25" 
                 Grid.Row="3" Width="85" Height="40"/>
+        <!-- Future implementation
         <Label Name="lblMonth" Content="Months"  HorizontalAlignment="Center" Margin="0,150,0,0" 
                Grid.Row="2" VerticalAlignment="Top"/>
         <ComboBox Name="cmboMonths" HorizontalAlignment="Center" Margin="0,176,0,0" Grid.Row="2" 
-                  VerticalAlignment="Top" Width="120" SelectionChanged="cmboMonths_SelectionChanged"
-                  />
+                  VerticalAlignment="Top" Width="120"
+                                  
+                  >
+            <ComboBoxItem Content="January"/>
+            <ComboBoxItem Content="Feburary"/>
+            <ComboBoxItem Content="March"/> 
+            <ComboBoxItem Content="April"/>
+            <ComboBoxItem Content="May"/> 
+            <ComboBoxItem Content="June"/>
+            <ComboBoxItem Content="July"/> 
+            <ComboBoxItem Content="August"/>
+            <ComboBoxItem Content="September"/> 
+            <ComboBoxItem Content="October"/>
+            <ComboBoxItem Content="November"/>
+            <ComboBoxItem Content="December"/>
+        </ComboBox>
+        -->
+        <Label Name="lblAmount" Content="$0" HorizontalAlignment="Center" FontSize="30" 
+               Margin="0,36,0,0" Grid.Row="2" VerticalAlignment="Top" Width="187"
+               HorizontalContentAlignment="Center"/>
 
     </Grid>
 </Window>

@@ -9,7 +9,6 @@ namespace JoshsFinancialplanner.MenuFunctions
 {
     public class PaymentDetails
     {
-        public string Month { get; set; }
         public string PaymentName { get; set; }
         public string DueDate { get; set; }
         public string Category { get; set; }

@@ -20,56 +20,60 @@ namespace JoshsFinancialplanner
 {
     public partial class MainWindow : Window
     {
-        List<PaymentDetails>? paymentEntryData = new List<PaymentDetails>();
+        List<PaymentDetails> paymentEntryData = new List<PaymentDetails>();
+        //TotalAmount is used for the lblAmount label 
+        private int TotalAmount { get; set; } = 0;
+        // PreviousValue is used in case the user edits an entry so that the previous
+        // value can be subtracted or added to the total value.
+        private int PreviousValue { get; set; } = 0;
 
         public MainWindow()
         {
             InitializeComponent();
-            PaymentDetails entry = new PaymentDetails { 
-                Month = "January", Amount = "1",
-                DueDate = "25rd", Category="Living",
-                PaymentName="Yeeahw" };
-
-       
-
-            dataGridPaymentDisplay.Items.Add(entry);
-            
-            ComboBoxInitializtion();
 
             FrmAddPayment.NewPaymentEntry += NewPaymentEntry;
-            FrmEditPayment.ChangedPaymentEntry += ChangedPaymentEntry;
+            FrmEditPayment.ChangedPaymentEntry += ChangedPaymentEntry;   
         }
 
         
 
         private void MenuNew_Click(object sender, RoutedEventArgs e)
         {
-            if(SaveLoadFunctions.isFileSaved == false)
+            if (SaveLoadFunctions.isFileSaved == false)
             {
                 var dialogresult = MessageBox.Show("Would you like to save your changes?",
-                    "Changes Unsaved",MessageBoxButton.YesNo, MessageBoxImage.Question);
-                if(dialogresult == MessageBoxResult.Yes)
+                    "Changes Unsaved", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                if (dialogresult == MessageBoxResult.Yes)
                 {
-                    GetPaymentEntryData();
-                    SaveLoadFunctions.ExpressSave(paymentEntryData);
+                    SaveLoadFunctions.SaveFile(paymentEntryData);
                     MessageBox.Show("Saved");
+
+                    dataGridPaymentDisplay.Items.Clear();
+                    TotalAmount = 0;
+                    lblAmount.Content = $"${TotalAmount}";
                 }
-                else if (dialogresult == MessageBoxResult.No)  
+                else if (dialogresult == MessageBoxResult.No)
                 {
                     dataGridPaymentDisplay.Items.Clear();
+                    TotalAmount = 0;
+                    lblAmount.Content = $"${TotalAmount}";
                 }
+            }
+            else
+            {
+                dataGridPaymentDisplay.Items.Clear();
+                TotalAmount = 0;
+                lblAmount.Content = $"${TotalAmount}";
             }
         }
 
         private void MenuSave_Click(object sender, RoutedEventArgs e)
         {
-            GetPaymentEntryData();
             SaveLoadFunctions.ExpressSave(paymentEntryData);
         }
 
         private void MenuSaveAs_Click(object sender, RoutedEventArgs e)
         {
-            GetPaymentEntryData();
             SaveLoadFunctions.SaveFile(paymentEntryData);
         }
 
@@ -78,18 +82,17 @@ namespace JoshsFinancialplanner
             try
             {
                 var entries = SaveLoadFunctions.LoadFile();
-                paymentEntryData = entries;
-                var result = from entry in paymentEntryData
-                             where entry.Month == cmboMonths.Text
-                             select entry;
 
-                foreach (var entry in result)
+                foreach (var entry in entries)
                 {
                     dataGridPaymentDisplay.Items.Add(entry);
                 }
-            }catch(Exception)
+
+                GetPaymentTotal(entries);
+            }
+            catch(Exception ex)
             {
-                MessageBox.Show("There was an error loading the file. Make sure that it is not an empty file.");
+                MessageBox.Show(ex.Message);
             }
 
             
@@ -104,7 +107,6 @@ namespace JoshsFinancialplanner
 
                 if(dialogResult == MessageBoxResult.Yes)
                 {
-                    GetPaymentEntryData();
                     SaveLoadFunctions.ExpressSave(paymentEntryData);
                     this.Close();
                 }
@@ -132,6 +134,7 @@ namespace JoshsFinancialplanner
         private void btnEdit_Click(object sender, RoutedEventArgs e)
         {
             var paymentEntry = dataGridPaymentDisplay.SelectedItem as PaymentDetails;
+            PreviousValue = Int32.Parse(paymentEntry.Amount.ToString().Replace("$",""));
             FrmEditPayment frmEditPayment = new FrmEditPayment(paymentEntry);
             frmEditPayment.ShowDialog();
         }
@@ -169,84 +172,62 @@ namespace JoshsFinancialplanner
             
         }
 
-        private void cmboMonths_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            //TODO: add this function into a seperate function to be called when the selection has been changed.
-
-            if (paymentEntryData != null)
-            {
-                var filterByMonth = from entry in paymentEntryData
-                                    where entry.Month == cmboMonths.Text
-                                    select entry;
-
-
-                dataGridPaymentDisplay.Items.Clear();
-
-                foreach (var entry in filterByMonth)
-                {
-                    dataGridPaymentDisplay.Items.Add(entry);
-                }
-            }
-            else
-            {
-                MessageBox.Show("payment data is null");
-                return;
-            }
-        }
-
         private void NewPaymentEntry(PaymentDetails paymentDetails)
         {
-            //cmboMonths is inaccessible outside MainWindow so the data is added here
-            paymentDetails.Month = cmboMonths.Text;
+            TotalAmount += Int32.Parse(paymentDetails.Amount.Replace("$",""));
+            lblAmount.Content = $"${TotalAmount}";
+
             paymentEntryData.Add(paymentDetails);
             dataGridPaymentDisplay.Items.Add(paymentDetails);
         }
 
         private void ChangedPaymentEntry(PaymentDetails paymentDetails)
         {
-            //This is here to make sure that the edited data is updated within memory
-            if (paymentEntryData.Contains(dataGridPaymentDisplay.SelectedItem as PaymentDetails))
-            {
-                paymentEntryData.Remove(dataGridPaymentDisplay.SelectedItem as PaymentDetails);
-                paymentEntryData.Add(paymentDetails);
-            }
+            GetChangedDifference(PreviousValue, 
+                Int32.Parse(paymentDetails.Amount.ToString().Replace("$","")));
+
+            lblAmount.Content = $"${TotalAmount}";
             dataGridPaymentDisplay.Items.Remove(dataGridPaymentDisplay.SelectedItem);
             dataGridPaymentDisplay.Items.Add(paymentDetails);
         }
 
-        private void ComboBoxInitializtion()
+        private void GetChangedDifference(int previousValue, int currentValue)
         {
-            cmboMonths.Items.Add("January");
-            cmboMonths.Items.Add("Feburary");
-            cmboMonths.Items.Add("March");
-            cmboMonths.Items.Add("April");
-            cmboMonths.Items.Add("May");
-            cmboMonths.Items.Add("June");
-            cmboMonths.Items.Add("July");
-            cmboMonths.Items.Add("August");
-            cmboMonths.Items.Add("September");
-            cmboMonths.Items.Add("October");
-            cmboMonths.Items.Add("November");
-            cmboMonths.Items.Add("December");
-            cmboMonths.SelectedIndex = DateTime.Now.Month - 1;
+            int difference; 
+            if (previousValue < currentValue)
+            {
+                difference = currentValue - previousValue;
+                TotalAmount += difference;
+            }
+            else if (previousValue > currentValue)
+            {
+                difference = previousValue - currentValue;
+                TotalAmount -= currentValue;
+            }
         }
 
-        private void GetPaymentEntryData()
+        private void GetPaymentTotal(List<PaymentDetails> paymentEntries)
         {
-            if (dataGridPaymentDisplay.Items != null)
+            List<string> Amounts = new List<string>();
+            
+
+            foreach (var entry in paymentEntries)
             {
-                foreach (var item in dataGridPaymentDisplay.Items)
-                {
-                    paymentEntryData.Add(item as PaymentDetails);
-                }
-                foreach (var entry in paymentEntryData)
-                {
-                    entry.Month = cmboMonths.SelectedItem.ToString();
-                }
+                Amounts.Add(entry.Amount.Replace("$", ""));
+            }
+
+            foreach (var entry in Amounts)
+            {
+                TotalAmount += Int32.Parse(entry);
+            }
+
+            if(TotalAmount < 0)
+            {
+                lblAmount.Content = $"$0";
             }
             else
             {
-                return;
+                lblAmount.Content = $"${TotalAmount.ToString()}";
             }
         }
     }
