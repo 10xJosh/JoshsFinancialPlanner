@@ -38,26 +38,26 @@ namespace JoshsFinancialplanner.MenuFunctions
             if (saveFileDialog.FileName != "")
             {
                 Path = saveFileDialog.FileName;
+
+                try
+                {
+                    XmlSerializer writer = new XmlSerializer(typeof(List<PaymentDetails>));
+
+                    using (FileStream fs = File.Create(Path))
+                    {
+                        writer.Serialize(fs, paymentEntries);
+                        fs.Close();
+                    }
+
+                }
+                catch(Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
             }
             else
             {
                 return;
-            }
-
-            try
-            {
-                XmlSerializer writer = new XmlSerializer(typeof(List<PaymentDetails>));
-
-                using (FileStream fs = File.Create(Path))
-                {
-                    writer.Serialize(fs, paymentEntries);
-                    fs.Close();
-                }
-
-            }
-            catch(Exception ex)
-            {
-                MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
 
             isFileSaved = true;
@@ -129,7 +129,12 @@ namespace JoshsFinancialplanner.MenuFunctions
             if (openFileDialog.FileName != "")
             {
                 path = openFileDialog.FileName;
+            } 
+            else
+            {
+                return null;
             }
+
 
             try
             {

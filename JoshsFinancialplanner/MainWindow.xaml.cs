@@ -22,7 +22,7 @@ namespace JoshsFinancialplanner
     {
         List<PaymentDetails> paymentEntryData = new List<PaymentDetails>();
         //TotalAmount is used for the lblAmount label 
-        private int TotalAmount { get; set; } = 0;
+        private long TotalAmount { get; set; } = 0;
         // PreviousValue is used in case the user edits an entry so that the previous
         // value can be subtracted or added to the total value.
         private int PreviousValue { get; set; } = 0;
@@ -83,16 +83,24 @@ namespace JoshsFinancialplanner
             {
                 var entries = SaveLoadFunctions.LoadFile();
 
-                foreach (var entry in entries)
+                if(entries != null)
                 {
-                    dataGridPaymentDisplay.Items.Add(entry);
+                    foreach (var entry in entries)
+                    {
+                        dataGridPaymentDisplay.Items.Add(entry);
+                    }
+
+                    GetPaymentTotal(entries);
+                }
+                else
+                {
+                    return;
                 }
 
-                GetPaymentTotal(entries);
             }
-            catch(Exception ex)
+            catch
             {
-                MessageBox.Show(ex.Message);
+                return;
             }
 
             
