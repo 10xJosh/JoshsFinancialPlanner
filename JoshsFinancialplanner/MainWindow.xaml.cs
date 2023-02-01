@@ -202,7 +202,7 @@ namespace JoshsFinancialplanner
             else if (previousValue > currentValue)
             {
                 difference = previousValue - currentValue;
-                TotalAmount -= currentValue;
+                TotalAmount -= difference;
             }
         }
 
