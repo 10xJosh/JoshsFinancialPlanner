@@ -30,7 +30,6 @@
                 <MenuItem Header="Load" Click="MenuLoad_Click"/>
                 <MenuItem Header="Exit" Click="MenuExit_Click"/>
             </MenuItem>
-            <MenuItem Header="Edit"></MenuItem>
         </Menu>
 
         <Label Content="Monthly Payment Overview:"
