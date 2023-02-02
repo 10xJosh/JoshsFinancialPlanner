@@ -30,7 +30,7 @@ namespace JoshsFinancialplanner.MenuFunctions
             SaveFileDialog saveFileDialog= new SaveFileDialog();
 
             saveFileDialog.Title = "Select Location to Save file";
-            saveFileDialog.Filter = "Josh's Financial Planner (*.jfp)|*.jfp";
+            saveFileDialog.Filter = "Josh's Monthly Expense Tracker (*.jmet)|*.jmet";
             saveFileDialog.CheckFileExists = false;
             saveFileDialog.CheckPathExists = true;
             saveFileDialog.ShowDialog();
@@ -123,37 +123,36 @@ namespace JoshsFinancialplanner.MenuFunctions
 
             OpenFileDialog openFileDialog = new OpenFileDialog();
             openFileDialog.Title = "Select a File";
-            openFileDialog.Filter = "Josh's Financial Planner (*.jfp)|*.jfp";
+            openFileDialog.Filter = "Josh's Monthly Expense Tracker (*.jmet)|*.jmet";
             openFileDialog.ShowDialog();
 
             if (openFileDialog.FileName != "")
             {
                 path = openFileDialog.FileName;
+
+                try
+                {
+                    path = openFileDialog.FileName;
+                    XmlSerializer xmlSerializer = new XmlSerializer(typeof(List<PaymentDetails>));
+
+                    using (StreamReader selectedFile = new StreamReader(path))
+                    {
+                        paymentEntries = xmlSerializer.Deserialize(selectedFile) as List<PaymentDetails>;
+                    }
+
+                    return paymentEntries;
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
             } 
             else
             {
-                return null;
-            }
-
-
-            try
-            {
-                path = openFileDialog.FileName;
-                XmlSerializer xmlSerializer = new XmlSerializer(typeof(List<PaymentDetails>));
-
-                using(StreamReader selectedFile = new StreamReader(path))
-                {
-                    paymentEntries = xmlSerializer.Deserialize(selectedFile) as List<PaymentDetails>;
-                }
-
                 return paymentEntries;
             }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
 
-            return null;
+            return paymentEntries;
         }
         
     }
