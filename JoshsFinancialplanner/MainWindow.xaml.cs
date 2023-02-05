@@ -24,7 +24,7 @@ namespace JoshsFinancialplanner
         //TotalAmount is used for the lblAmount label 
         private long TotalAmount { get; set; } = 0;
         // PreviousValue is used in case the user edits an entry so that the previous
-        // value can be subtracted or added to the total value.
+        // value can be subtracted or added from the total value.
         private int PreviousValue { get; set; } = 0;
 
         public MainWindow()

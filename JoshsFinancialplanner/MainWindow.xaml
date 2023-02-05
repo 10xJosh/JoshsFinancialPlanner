@@ -45,6 +45,7 @@
                 <DataGridTextColumn Header="Due Date" Width="75" Binding="{Binding DueDate}"></DataGridTextColumn>
                 <DataGridTextColumn Header="Amount" Width="75" Binding="{Binding Amount}"></DataGridTextColumn>
                 <DataGridTextColumn Header="Category" Width="100" Binding="{Binding Category}"></DataGridTextColumn>
+                <DataGridTextColumn Header="Notes" Width="*" Binding="{Binding Notes}"></DataGridTextColumn>
             </DataGrid.Columns>
         </DataGrid>
         <Button Name="btnAdd" Click="btnAdd_Click" Grid.Column="2" Content="Add" Margin="27,25,350,25" 

@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:JoshsFinancialplanner.ButtonFunctions"
         mc:Ignorable="d"
-        Title="Edit Payment" Height="260" Width="300" ResizeMode="NoResize" WindowStartupLocation="CenterScreen"
+        Title="Edit Payment" Height="280" Width="300" ResizeMode="NoResize" WindowStartupLocation="CenterScreen"
         >
     <Grid>
         <Label Content="Payment Name:" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
@@ -17,10 +17,15 @@
         <TextBox Name="txtAmount" HorizontalAlignment="Left" Margin="185,45,0,0" TextWrapping="WrapWithOverflow" VerticalAlignment="Top" Width="82"/>
         <TextBox Name="txtDueDate" HorizontalAlignment="Left" Margin="118,80,0,0" TextWrapping="WrapWithOverflow" VerticalAlignment="Top" Width="149"/>
         <ComboBox Name="cmboCategory" HorizontalAlignment="Left" Margin="76,109,0,0" VerticalAlignment="Top" Width="192"/>
-        <Button Content="Add" Click="btnAdd_Click" HorizontalAlignment="Left" Margin="57,171,0,0" VerticalAlignment="Top"
+        <Button Content="Add" Click="btnAdd_Click" HorizontalAlignment="Left" Margin="57,197,0,0" VerticalAlignment="Top"
                 Height="30" Width="70"
                 />
-        <Button Content="Cancel" Click="btnCancel_Click" Height="30" Width="70" HorizontalAlignment="Left" Margin="167,171,0,0" VerticalAlignment="Top"/>
+        <Button Content="Cancel" Click="btnCancel_Click" Height="30" Width="70" HorizontalAlignment="Left" 
+                Margin="172,197,0,0" VerticalAlignment="Top"/>
+        <Label Content="Notes:" HorizontalAlignment="Left" Margin="10,144,0,0" VerticalAlignment="Top"/>
+        <TextBox Name="txtNotes" HorizontalAlignment="Left" Margin="59,148,0,0" TextWrapping="WrapWithOverflow" 
+                 Text="" VerticalAlignment="Top" Width="209" MaxLength="66"
+                 />
 
     </Grid>
 </Window>

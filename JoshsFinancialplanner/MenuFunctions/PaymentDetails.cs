@@ -13,6 +13,7 @@ namespace JoshsFinancialplanner.MenuFunctions
         public string DueDate { get; set; }
         public string Category { get; set; }
         public string Amount { get; set; }
+        public string Notes { get; set; }
     }
 
 }

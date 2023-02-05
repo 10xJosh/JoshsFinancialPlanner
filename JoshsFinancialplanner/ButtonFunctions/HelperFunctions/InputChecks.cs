@@ -33,6 +33,5 @@ namespace JoshsFinancialplanner.ButtonFunctions.HelperFunctions
                 return false;
             }
         }
-
     }
 }

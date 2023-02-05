@@ -17,7 +17,7 @@ namespace JoshsFinancialplanner.MenuFunctions
     internal class SaveLoadFunctions
     {
         public static event OnNewPaymentEntry NewPaymentEntry;
-        public static bool isFileSaved { get; set; }
+        public static bool isFileSaved { get; set; } = true;
         public static string? Path { get; set; }
 
         public static void SaveFile(List<PaymentDetails>? paymentEntries)

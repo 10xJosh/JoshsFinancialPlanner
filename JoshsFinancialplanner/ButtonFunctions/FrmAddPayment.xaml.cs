@@ -48,7 +48,7 @@ namespace JoshsFinancialplanner.ButtonFunctions
                     "in order to add entry.", "Error", MessageBoxButton.OK, 
                     MessageBoxImage.Information);
             }
-            else if (txtPaymentName.Text != "" || txtDueDate.Text != "" || txtAmount.Text != "")
+            else if (txtPaymentName.Text != "" && txtDueDate.Text != "" && txtAmount.Text != "" )
             {
                 if (inputChecks.isPaymentNameShort(txtPaymentName.Text))
                 {
@@ -87,7 +87,8 @@ namespace JoshsFinancialplanner.ButtonFunctions
                         PaymentName = txtPaymentName.Text,
                         DueDate = txtDueDate.Text,
                         Amount = $"${Math.Round(parsedAmount)}",
-                        Category = cmboCategory.Text
+                        Category = cmboCategory.Text,
+                        Notes = txtNotes.Text,
                     };
 
                     NewPaymentEntry(paymentDetails);
