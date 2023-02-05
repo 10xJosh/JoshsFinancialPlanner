@@ -6,8 +6,4 @@ Keeps track of payments for the month and gets the sum of the expenses for the m
 
 Payments can be added, edited and saved using a custom .jmet file extension. 
 
-
-
-![loadsave](https://user-images.githubusercontent.com/55113224/216012660-c0864ce2-5653-4e05-b092-947095dc640c.gif)
-
-
+![loadsave](https://user-images.githubusercontent.com/55113224/216204887-9663c7e0-f74a-4a21-b8bc-99cf9852f516.gif)
